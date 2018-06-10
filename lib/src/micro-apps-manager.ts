@@ -1,6 +1,9 @@
 import {MicroApp} from './model/micro-app';
 import {AreaConfig} from './model/area-config';
 import {FrontendRouter} from '../frontend-router';
+import {EventManager} from './event-manager';
+
+const anyWindow = window: any;
 
 /**
  * This class configure micro apps
@@ -13,12 +16,13 @@ export class MicroAppsManager {
         this.areaConfigOptions = areaConfig;
     }
 
-    initApps(micorApps: MicroApp[]) {
+    initApps(microApps: MicroApp[]) {
         const router = new FrontendRouter();
-        micorApps.forEach(app => {
+        microApps.forEach(app => {
             router.add(app.name, () => this.showFrame(app))
             this.createFrame(app);
         })
+        anyWindow.microAppsEventsManager = new EventManager();
     }
 
     showFrame(app: MicroApp) {
@@ -64,4 +68,6 @@ export class MicroAppsManager {
             console.error(`Unable to fetch ${app.entryUrl}`, err)
         })
     }
+
+
 }

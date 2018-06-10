@@ -1,4 +1,4 @@
 export interface ApplicationRoute {
     url: string;
-    applicationUrl : string;
+    handler: () => void;
 }

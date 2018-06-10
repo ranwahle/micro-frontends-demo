@@ -3,7 +3,7 @@ import {AreaConfig} from './model/area-config';
 import {FrontendRouter} from '../frontend-router';
 import {EventManager} from './event-manager';
 
-const anyWindow = window: any;
+const anyWindow = window as any;
 
 /**
  * This class configure micro apps
@@ -11,22 +11,28 @@ const anyWindow = window: any;
 export class MicroAppsManager {
 
     private areaConfigOptions: AreaConfig;
+    private router : FrontendRouter;
 
     configuraArea(areaConfig: AreaConfig) {
         this.areaConfigOptions = areaConfig;
+        this.router = FrontendRouter.getRouter();
     }
 
     initApps(microApps: MicroApp[]) {
-        const router = new FrontendRouter();
+
+        this.router.config({root: '/'})
         microApps.forEach(app => {
-            router.add(app.name, () => this.showFrame(app))
+            this.router.add(app.name, () => this.showFrame(app))
             this.createFrame(app);
         })
+
+        this.router.listen()
+
         anyWindow.microAppsEventsManager = new EventManager();
     }
 
     showFrame(app: MicroApp) {
-
+        console.log('Showing frame', app)
     }
 
     createFrame(app: MicroApp) {

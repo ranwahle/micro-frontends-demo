@@ -2,7 +2,7 @@ declare type eventCallback = ((...args: any[]) => any);
 
 export class EventManager {
 
-    private readonly eventSubscriptions: { [eventName: string]: eventCallback[] }
+    private readonly eventSubscriptions: { [eventName: string]: eventCallback[] };
 
     constructor() {
         this.eventSubscriptions = {};
@@ -30,7 +30,7 @@ export class EventManager {
         if (!this.eventSubscriptions[eventName]) {
             return;
         }
-        this.eventSubscriptions[eventName].forEach(subscriber => subscriber(args) )
+        this.eventSubscriptions[eventName].forEach(subscriber => subscriber(...args) )
     }
 
 

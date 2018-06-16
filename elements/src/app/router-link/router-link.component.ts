@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-router-link',
+  selector: 'router-link',
   templateUrl: './router-link.component.html',
   styleUrls: ['./router-link.component.css']
 })

@@ -1,0 +1,3 @@
+<div *ngFor="let app of appsMenu">
+  <a href="{{app.appName}}" (click)="navigationOccured($event)">{{app.appName}}</a>
+</div>

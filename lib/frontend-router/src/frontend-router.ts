@@ -3,16 +3,13 @@ import {ApplicationRoute} from './model/application-route';
 
 export class FrontendRouter {
 
+    private static router: FrontendRouter;
     _lastRouteResolved: any = null;
     routes: ApplicationRoute[] = [];
-    private _paused: boolean;
-    private static router: FrontendRouter;
     _useHash: boolean = false;
     _hash: any = null;
     root: string;
     _notFoundHandler: any;
-    _callLeave: any;
-
     _genericHooks: any;
     PARAMETER_REGEXP = /([:*])(\w+)/g;
     WILDCARD_REGEXP = /\*/g;
@@ -21,6 +18,9 @@ export class FrontendRouter {
     FOLLOWED_BY_SLASH_REGEXP = '(?:\/$|$)';
     MATCH_REGEXP_FLAGS = '';
     _defaultHandler: any;
+    _listeningInterval: any;
+    private _paused: boolean;
+
     static getRouter() {
         FrontendRouter.router = FrontendRouter.router || new FrontendRouter();
 
@@ -28,7 +28,15 @@ export class FrontendRouter {
 
     }
 
-    isHashedRoot(url, useHash, hash): boolean{
+    _callLeave() {
+        const lastRouteResolved = this._lastRouteResolved;
+
+        if (lastRouteResolved && lastRouteResolved.hooks && lastRouteResolved.hooks.leave) {
+            lastRouteResolved.hooks.leave(lastRouteResolved.params);
+        }
+    }
+
+    isHashedRoot(url, useHash, hash): boolean {
         if (this.isPushStateAvailable() && !useHash) {
             return false;
         }
@@ -38,7 +46,6 @@ export class FrontendRouter {
         let split = url.split(hash);
         return split.length < 2 || split[1] === '';
     }
-
 
     getAppRoot(url, routes) {
         var matched = routes.map(
@@ -66,25 +73,46 @@ export class FrontendRouter {
     }
 
     listen() {
-       // if (this.usePushState) {
-            window.addEventListener('popstate', this._onLocationChange);
-       // } else if (this.isHashChangeAPIAvailable()) {
-       //     window.addEventListener('hashchange', this._onLocationChange);
-       //  } else {
-       //      let cached = this._cLoc(), current, check;
-       //
-       //      check = () => {
-       //          current = this._cLoc();
-       //          if (cached !== current) {
-       //              cached = current;
-       //              this.resolve();
-       //          }
-       //          this._listeningInterval = setTimeout(check, 200);
-       //      };
-       //      check();
-       //  }
-    }
+        // if (this.usePushState) {
+        window.addEventListener('popstate', (args) => {
+            console.log('popstate', args.state);
+            this._onLocationChange(null)
+        });
+        window.addEventListener('pushstate', (args: any) => {
+            console.log('pushstate', args.state);
+            this._onLocationChange(null)
+        });
 
+        let lastUrl = this.root;//  this._cLoc();
+        let current = window.location.pathname;
+        const scheduleCheck = () => {
+
+            current = this._cLoc();
+            if (lastUrl !== current) {
+                lastUrl = current;
+                this.resolve();
+            }
+            this._listeningInterval = setTimeout(scheduleCheck, 200);
+        }
+        scheduleCheck();
+
+        console.log('listenning...')
+        // } else if (this.isHashChangeAPIAvailable()) {
+        //     window.addEventListener('hashchange', this._onLocationChange);
+        //  } else {
+        //      let cached = this._cLoc(), current, check;
+        //
+        //      check = () => {
+        //          current = this._cLoc();
+        //          if (cached !== current) {
+        //              cached = current;
+        //              this.resolve();
+        //          }
+        //          this._listeningInterval = setTimeout(check, 200);
+        //      };
+        //      check();
+        //  }
+    }
 
     _cLoc() {
         if (typeof window !== 'undefined') {
@@ -97,15 +125,18 @@ export class FrontendRouter {
     }
 
     clean(s) {
+        s = s || '';
         if (s instanceof RegExp) return s;
         return s.replace(/\/+$/, '').replace(/^\/+/, '^/');
     }
 
-    _findLinks () {
+    _findLinks() {
         return [].slice.call(document.querySelectorAll('[data-navigo]'));
     }
-    _onLocationChange () {
-        this.resolve();
+
+    _onLocationChange(args) {
+        console.log('args', args)
+        this.resolve(args);
     }
 
     extractGETParameters(url) {
@@ -145,8 +176,6 @@ export class FrontendRouter {
         return this.root;
     }
 
-
-
     manageHooks(handler, hooks?, params?) {
         if (hooks && typeof hooks === 'object') {
             if (hooks.before) {
@@ -178,7 +207,7 @@ export class FrontendRouter {
                     .replace(this.WILDCARD_REGEXP, this.REPLACE_WILDCARD) + this.FOLLOWED_BY_SLASH_REGEXP
                 , this.MATCH_REGEXP_FLAGS);
         }
-        return { regexp, paramNames };
+        return {regexp, paramNames};
     }
 
     regExpResultToParams(match, names) {
@@ -193,27 +222,32 @@ export class FrontendRouter {
             }, null);
     }
 
-
     findMatchedRoutes(url, routes = []) {
-        return routes
+
+        const result = routes
             .map(route => {
-                var { regexp, paramNames } = this.replaceDynamicURLParts(this.clean(route.route));
-                var match = url.replace(/^\/+/, '/').match(regexp);
-                var params = this.regExpResultToParams(match, paramNames);
-                return match ? { match, route, params } : false;
-            })
-            .filter(m => m);
+               // return route.url &&  url.startsWith(`/${route.url}`)
+                const {regexp, paramNames} = this.replaceDynamicURLParts(this.clean(route.url));
+                const match = url.replace(/^\/+/, '/').match(regexp);
+                const params = this.regExpResultToParams(match, paramNames);
+                return match ? {match, route, params} : false;
+            });
+
+
+        console.log('routes matched', result, routes, url)
+
+        return result.filter(m => m);;
     }
 
     match(url, routes) {
         return this.findMatchedRoutes(url, routes)[0] || false;
     }
 
-
     resolve(current?) {
+        current = current || window.location.pathname;
+        console.log('current', current, window.location.pathname)
         var handler, m;
-        var url = (current || this._cLoc()).replace(this._getRoot(), '');
-
+        const url = (current || this._cLoc()).replace(this._getRoot(), '');
 
 
         let GETParameters = this.extractGETParameters(current || this._cLoc());
@@ -244,6 +278,9 @@ export class FrontendRouter {
                 name: m.route.name
             };
             handler = m.route.handler;
+
+            console.log('handler', handler, m.route);
+
             this.manageHooks(() => {
                 this.manageHooks(() => {
                     m.route.route instanceof RegExp ?
@@ -258,10 +295,10 @@ export class FrontendRouter {
             onlyURL === this._hash ||
             this.isHashedRoot(onlyURL, this._useHash, this._hash)
         )) {
-           this.manageHooks(() => {
-              this. manageHooks(() => {
+            this.manageHooks(() => {
+                this.manageHooks(() => {
                     this._callLeave();
-                    this._lastRouteResolved = { url: onlyURL, query: GETParameters, hooks: this._defaultHandler.hooks };
+                    this._lastRouteResolved = {url: onlyURL, query: GETParameters, hooks: this._defaultHandler.hooks};
                     this._defaultHandler.handler(GETParameters);
                 }, this._defaultHandler.hooks);
             }, this._genericHooks);
@@ -270,7 +307,7 @@ export class FrontendRouter {
             this.manageHooks(() => {
                 this.manageHooks(() => {
                     this._callLeave();
-                    this._lastRouteResolved = { url: onlyURL, query: GETParameters, hooks: this._notFoundHandler.hooks };
+                    this._lastRouteResolved = {url: onlyURL, query: GETParameters, hooks: this._notFoundHandler.hooks};
                     this._notFoundHandler.handler(GETParameters);
                 }, this._notFoundHandler.hooks);
             }, this._genericHooks);

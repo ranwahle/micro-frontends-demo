@@ -20,19 +20,30 @@ export class MicroAppsManager {
 
     initApps(microApps: MicroApp[]) {
 
-        this.router.config({root: '/'})
+        this.router.config({root: ''})
         microApps.forEach(app => {
-            this.router.add(app.name, () => this.showFrame(app))
+            this.router.add(`${app.name}`, () => this.showFrame(app))
             this.createFrame(app);
         })
+        this.router.add('', () => this.hideFrames())
 
         this.router.listen()
 
         anyWindow.microAppsEventsManager = new EventManager();
     }
 
+    hideFrames() {
+        const frames =  document.querySelectorAll('iframe.micro-app-frame');
+        for (let index = 0; index < frames.length; index++) {
+
+            frames[index].classList.remove('shown');
+        }
+    }
+
     showFrame(app: MicroApp) {
         console.log('Showing frame', app)
+       this.hideFrames();
+        document.querySelector(`#micro-app-frame-${app.name}`).classList.add('shown')
     }
 
     createFrame(app: MicroApp) {

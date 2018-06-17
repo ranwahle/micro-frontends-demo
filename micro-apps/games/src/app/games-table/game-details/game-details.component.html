@@ -1,3 +1,42 @@
-<p>
-  game-details works!
-</p>
+<div>
+
+  <div>
+    <mat-select placeholder="Group A" [(ngModel)]="game.group1">
+      <mat-option *ngFor="let group of groups" [value]="group">
+        {{group.name}}
+      </mat-option>
+    </mat-select>
+  </div>
+  <div>
+    <mat-select placeholder="Group B" [(ngModel)]="game.group2">
+      <mat-option *ngFor="let group of groups" [value]="group">
+        {{group.name}}
+      </mat-option>
+    </mat-select>
+  </div>
+  <div>
+    <label>
+      Time
+      <input [matDatepicker]="gameDatePicker" [(ngModel)]="game.date">
+      <mat-datepicker-toggle matSuffix [for]="gameDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #gameDatePicker></mat-datepicker>
+    </label>
+  </div>
+  <div>
+    <label>Score A
+      <input type="number" [(ngModel)]="game.score1">
+    </label>
+  </div>
+
+  <div>
+
+    <label>Score B
+      <input type="number" [(ngModel)]="game.score2">
+    </label>
+  </div>
+  <div>
+   <button (click)="saveGameClick()">Save</button>
+  </div>
+
+
+</div>

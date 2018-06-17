@@ -16,8 +16,16 @@ export class GamesTableComponent implements OnInit {
   constructor(private groupsService: GroupsService) {
   }
 
+  addGame(game: Game) {
+    this.games.push(game);
+  }
+
   ngOnInit() {
-    this.groupsService.getGroups().then(groups => this.groups = groups);
+    this.groupsService.getGroups().then(groups => {
+      this.groups = groups
+
+    }
+      );
   }
 
 }

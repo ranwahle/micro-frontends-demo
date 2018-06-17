@@ -1,0 +1,10 @@
+<mat-list>
+  <mat-list-item *ngFor="let game of games">
+    <app-game-details [groups]="groups" [game]="game"></app-game-details>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+  <mat-list-item>
+    <app-game-details [groups]="groups" (saveGame)="addGame($event)"></app-game-details>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+</mat-list>

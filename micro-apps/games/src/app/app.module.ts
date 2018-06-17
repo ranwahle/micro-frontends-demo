@@ -6,6 +6,15 @@ import {ShellClientModule} from './shell-client/shell-client.module';
 import { GamesTableComponent } from './games-table/games-table.component';
 import {GroupsService} from './groups.service';
 import { GameDetailsComponent } from './games-table/game-details/game-details.component';
+import {
+  MatDatepickerModule,
+  MatDividerModule,
+  MatListModule,
+  MatNativeDateModule,
+  MatSelectModule
+} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,7 +24,14 @@ import { GameDetailsComponent } from './games-table/game-details/game-details.co
   ],
   imports: [
     BrowserModule,
-    ShellClientModule
+    FormsModule,
+    ShellClientModule,
+    BrowserAnimationsModule,
+    MatSelectModule,
+    MatListModule,
+    MatDividerModule,
+    MatNativeDateModule,
+    MatDatepickerModule
   ],
   providers: [GroupsService],
   bootstrap: [AppComponent]

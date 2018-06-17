@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Group} from '../../model/group.interface';
+import {Game} from '../../model/game.interface';
 
 @Component({
   selector: 'app-game-details',
@@ -9,9 +10,20 @@ import {Group} from '../../model/group.interface';
 export class GameDetailsComponent implements OnInit {
 
   @Input() groups: Group[];
-  constructor() { }
+  @Input() game: Game;
+
+  @Output() saveGame: EventEmitter<Game> = new EventEmitter<Game>();
+
+  constructor() {
+  }
+
+  saveGameClick() {
+
+    this.saveGame.emit(this.game);
+  }
 
   ngOnInit() {
+    this.game = this.game || {group1: undefined, group2: undefined, date: undefined, score1: undefined, score2: undefined}
   }
 
 }

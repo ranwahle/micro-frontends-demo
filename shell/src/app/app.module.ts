@@ -6,6 +6,7 @@ import {HeaderComponent} from './header/header.component';
 import {StoreModule} from '@ngrx/store';
 import {combinedReducers} from './store/app.reducers';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {MatToolbarModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     StoreDevtoolsModule.instrument({
       maxAge: 60,
     }),
-
+MatToolbarModule,
 
     // RouterModule.forRoot([])
 

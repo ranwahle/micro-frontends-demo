@@ -3,6 +3,5 @@
  */
 export interface  MicroAppService {
     serviceName: string;
-    appName: string;
     invokeMethod: (...args: any[])=> Promise<any>
 }

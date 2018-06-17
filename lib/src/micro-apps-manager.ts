@@ -2,6 +2,7 @@ import {MicroApp} from './model/micro-app';
 import {AreaConfig} from './model/area-config';
 import {FrontendRouter} from '../frontend-router';
 import {EventManager} from './event-manager';
+import {MicroAppsServiceManager} from './micro-apps-service-manager';
 
 const anyWindow = window as any;
 
@@ -30,6 +31,7 @@ export class MicroAppsManager {
         this.router.listen()
 
         anyWindow.microAppsEventsManager = new EventManager();
+        anyWindow.microAppsServiceManager = new MicroAppsServiceManager();
     }
 
     hideFrames() {

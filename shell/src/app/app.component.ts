@@ -26,7 +26,8 @@ export class AppComponent implements OnInit {
     appManager.configuraArea({
       frameContentFillingMethod: 'ContentFetch', frameAreaSelector: '#micro-apps-frame'
     })
-    appManager.initApps([{name: 'team-details', entryUrl: 'http://localhost:3001'}])
+    appManager.initApps([{name: 'teams', entryUrl: 'http://localhost:3001'},
+        {name: 'games', entryUrl: 'http://localhost:4203'}])
     this.appsEventManager =  (window as any).microAppsEventsManager;
     this.appsEventManager.subscribe('loaded', args =>  {
       this.store.dispatch(new AppLoadedAction(args.appName))

@@ -1,1 +1,1 @@
-[]
+[{"group1":{"id":2,"name":"Russia"},"group2":{"id":8,"name":"Saudi Arabia"},"date":"2018-06-13T21:00:00.000Z","score1":5,"score2":0},{"group1":{"id":15,"name":"Egypt"},"group2":{"id":20,"name":"Uruguay"},"date":"2018-06-15T21:00:00.000Z","score1":0,"score2":1},{"group1":{"id":1,"name":"Brazil"},"group2":{"id":26,"name":"Switzerland"},"date":"2018-06-16T21:00:00.000Z","score1":1,"score2":1},{"group1":{"id":24,"name":"Morocco"},"group2":{"id":3,"name":""},"date":"2018-06-15T21:00:00.000Z","score1":0,"score2":1}]

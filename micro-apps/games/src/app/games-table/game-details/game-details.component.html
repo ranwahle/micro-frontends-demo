@@ -1,18 +1,20 @@
 <div>
-
   <div>
-    <mat-select placeholder="Group A" [(ngModel)]="game.group1">
-      <mat-option *ngFor="let group of groups" [value]="group">
-        {{group.name}}
-      </mat-option>
-    </mat-select>
+
+      <mat-select #group1 placeholder="Team A" [(ngModel)]="game.group1">
+        <mat-option *ngFor="let group of groups" [value]="group">
+          {{group.name}}
+        </mat-option>
+      </mat-select>
+
   </div>
   <div>
-    <mat-select placeholder="Group B" [(ngModel)]="game.group2">
-      <mat-option *ngFor="let group of groups" [value]="group">
-        {{group.name}}
-      </mat-option>
-    </mat-select>
+
+      <mat-select placeholder="Team B" [(ngModel)]="game.group2.id" *ngIf="game && game.group2">
+        <mat-option *ngFor="let group of groups" [value]="group.id">
+          {{group.name}}
+        </mat-option>
+      </mat-select>
   </div>
   <div>
     <label>
@@ -35,7 +37,7 @@
     </label>
   </div>
   <div>
-   <button (click)="saveGameClick()">Save</button>
+    <button (click)="saveGameClick()">Save</button>
   </div>
 
 

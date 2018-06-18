@@ -1,6 +1,6 @@
 <mat-list>
   <mat-list-item *ngFor="let game of games">
-    <app-game-details [groups]="groups" [game]="game"></app-game-details>
+    <app-game-details *ngIf="groups" [groups]="groups" [game]="game"></app-game-details>
     <mat-divider></mat-divider>
   </mat-list-item>
   <mat-list-item>

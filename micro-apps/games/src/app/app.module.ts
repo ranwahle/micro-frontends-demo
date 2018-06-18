@@ -15,6 +15,8 @@ import {
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
+import {GamesService} from './games.service';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,9 +33,10 @@ import {FormsModule} from '@angular/forms';
     MatListModule,
     MatDividerModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    HttpClientModule
   ],
-  providers: [GroupsService],
+  providers: [GroupsService, GamesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

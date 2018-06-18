@@ -8,7 +8,7 @@ import {GroupsService} from './groups.service';
 import { GameDetailsComponent } from './games-table/game-details/game-details.component';
 import {
   MatDatepickerModule,
-  MatDividerModule,
+  MatDividerModule, MatInputModule,
   MatListModule,
   MatNativeDateModule,
   MatSelectModule
@@ -34,6 +34,7 @@ import {HttpClientModule} from '@angular/common/http';
     MatDividerModule,
     MatNativeDateModule,
     MatDatepickerModule,
+    MatInputModule,
     HttpClientModule
   ],
   providers: [GroupsService, GamesService],

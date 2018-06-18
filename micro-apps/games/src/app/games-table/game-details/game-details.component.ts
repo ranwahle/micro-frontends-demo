@@ -45,11 +45,16 @@ export class GameDetailsComponent implements OnInit {
   saveGameClick() {
 
     this.saveGame.emit(this.game);
+    this.resetGame();
   }
 
 //  @ViewChild('group1')
 
   ngOnInit() {
+    this.resetGame();
+  }
+
+  private resetGame() {
     this.game = this.game || {
       group1: {id: 0, name: ''},
       group2: {id: 0, name: ''},

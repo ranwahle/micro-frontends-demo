@@ -1,0 +1,5 @@
+<div color="primary">
+  <div *ngFor="let team of teams">
+    <a [routerLink]="['/team/' + team.id]">{{team.name}}</a>
+  </div>
+</div>

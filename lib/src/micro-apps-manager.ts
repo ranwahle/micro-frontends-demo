@@ -13,6 +13,7 @@ export class MicroAppsManager {
 
     private areaConfigOptions: AreaConfig;
     private router: FrontendRouter;
+    shownApp: MicroApp;
 
     configuraArea(areaConfig: AreaConfig) {
         this.areaConfigOptions = areaConfig;
@@ -23,7 +24,10 @@ export class MicroAppsManager {
 
         this.router.config({root: ''})
         microApps.forEach(app => {
-            this.router.add(`${app.name}`, () => this.showFrame(app))
+            this.router.add(`${app.name}`, () => {
+                this.showFrame(app)
+                this.shownApp = app;
+            })
             this.createFrame(app);
         })
         this.router.add('', () => this.hideFrames())

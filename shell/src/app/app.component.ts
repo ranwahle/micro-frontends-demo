@@ -6,6 +6,8 @@ import {AppLoadedAction} from './store/app.actions';
 import {Observable} from 'rxjs/index';
 import {AppsState, MicroAppState} from './store/app.reducers';
 import {microAppsSelector} from './store/app.selectors';
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-root',
@@ -35,6 +37,12 @@ export class AppComponent implements OnInit {
       this.store.dispatch(new AppLoadedAction(args.appName))
 
     });
+
+    this.appsEventManager.subscribe('routeChanged', args => {
+      console.log('route changed', args);
+      window.history.replaceState(null, null, `${appManager.shownApp.name}${args}`);
+
+    })
   }
 
 }

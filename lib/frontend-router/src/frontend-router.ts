@@ -228,7 +228,8 @@ export class FrontendRouter {
             .map(route => {
                // return route.url &&  url.startsWith(`/${route.url}`)
                 const {regexp, paramNames} = this.replaceDynamicURLParts(this.clean(route.url));
-                const match = url.replace(/^\/+/, '/').match(regexp);
+                // const match = url.replace(/^\/+/, '/').match(regexp);
+                const match = url.startsWith(`/${route.url}`) ? route.url : false;
                 const params = this.regExpResultToParams(match, paramNames);
                 return match ? {match, route, params} : false;
             });

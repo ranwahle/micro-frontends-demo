@@ -1,5 +1,6 @@
 export const MICRO_APPS_EVENTS = {
-    loaded: 'loaded'
+    loaded: 'loaded',
+    routeChanged: 'routeChanged'
 }
 
 export class MicroAppsEvents {

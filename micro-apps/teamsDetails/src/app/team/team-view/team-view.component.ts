@@ -22,17 +22,17 @@ export class TeamViewComponent implements OnInit {
   ngOnInit() {
     let teamKey;
     this.busy = true;
-    this.route.params.forEach((urlParameters) => {
+    this.route.params.subscribe((urlParameters) => {
       teamKey = urlParameters['id'];
-    });
 
     this.teamService.getTeam(teamKey).valueChanges().subscribe((team) => {
-      this.team = team;
-      this.styleObj = {
-        'background-image': `url('assets/images/${this.team.poster}')`,
-      };
-      setTimeout(() => {
-        this.busy = false;
+      this.team = team;});
+    });
+
+    this.styleObj = {
+      'background-image': `url('assets/images/${this.team.poster}')`,
+    };
+    setTimeout(() => { this.busy = false;
        }, 500);
     });
   }

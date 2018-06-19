@@ -3,6 +3,7 @@ import {APP_LOADED, AppLoadedAction} from './app.actions';
 
 export interface MicroAppState {
   loaded: boolean;
+  title: string;
 }
 
 export interface AppsState {
@@ -20,13 +21,13 @@ export const combinedReducers: ActionReducerMap<State> = {
 }
 
 function appReducer(state: AppsState = initialState, action: Action) {
-  console.log('state', state)
   switch (action.type) {
     case APP_LOADED: {
       const newStateApps = {...state.apps};
-     const appName = (action as AppLoadedAction).appName;
-      newStateApps[appName] = newStateApps[appName] || {loaded: false};
-      newStateApps[appName].loaded = true;
+     const app = (action as AppLoadedAction).app;
+      newStateApps[app.id] = newStateApps[app.id] || {loaded: false, title: app.title};
+      newStateApps[app.id].loaded = true;
+        newStateApps[app.id].title = app.title;
       return {...state, apps: newStateApps};
     }
     default: {

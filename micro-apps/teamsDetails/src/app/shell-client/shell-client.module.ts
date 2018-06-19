@@ -1,10 +1,13 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ShellClientService} from './shell-client.service';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: []
+  providers: [ShellClientService],
+  declarations: [],
 })
-export class ShellClientModule { }
+export class ShellClientModule {
+}

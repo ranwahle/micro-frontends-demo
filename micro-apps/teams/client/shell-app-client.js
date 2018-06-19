@@ -6,7 +6,7 @@ const myParent = window.parent;
 
 shellAppClient.prototype.notifyLoaded =  function() {
     if (myParent && myParent.microAppsEventsManager && myParent.microAppsEventsManager.publish) {
-        myParent.microAppsEventsManager.publish('loaded', {appName: 'teams'})
+        myParent.microAppsEventsManager.publish('loaded', {appName: 'teams', context: window})
     }
 }
 

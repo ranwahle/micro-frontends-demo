@@ -2,3 +2,8 @@
     background: #31323e;
     color: #fff;
 }
+.sidebar {
+  display: flex;
+  background: #31323e;
+
+}

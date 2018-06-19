@@ -15,6 +15,8 @@ import firebaseConfig from '../fbConfig';
 import { AppComponent } from './app.component';
 import { TeamViewComponent } from './team/team-view/team-view.component';
 import { TeamService } from './team/team.service';
+import { TeamsListComponent } from './teams-list/teams-list.component';
+import {ShellClientModule} from './shell-client/shell-client.module';
 
 const MAT_MODULES  = [
   MatToolbarModule,
@@ -28,16 +30,19 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     TeamViewComponent,
+    TeamsListComponent,
   ],
   imports: [
     BrowserModule,
+    ShellClientModule,
     AngularFireDatabaseModule,
     FormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     BrowserAnimationsModule,
     FlexLayoutModule,
     ...MAT_MODULES,
-   RouterModule.forRoot(appRoutes, {useHash: true})
+   RouterModule.forRoot(appRoutes, {useHash: false}),
+
   ],
   providers: [TeamService],
   bootstrap: [AppComponent]

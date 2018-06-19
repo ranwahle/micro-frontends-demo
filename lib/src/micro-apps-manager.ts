@@ -13,6 +13,8 @@ export class MicroAppsManager {
 
     private areaConfigOptions: AreaConfig;
     private router: FrontendRouter;
+    shownApp: MicroApp;
+    apps: MicroApp[];
 
     configuraArea(areaConfig: AreaConfig) {
         this.areaConfigOptions = areaConfig;
@@ -23,7 +25,10 @@ export class MicroAppsManager {
 
         this.router.config({root: ''})
         microApps.forEach(app => {
-            this.router.add(`${app.name}`, () => this.showFrame(app))
+            this.router.add(`${app.id}`, () => {
+                this.showFrame(app)
+                this.shownApp = app;
+            })
             this.createFrame(app);
         })
         this.router.add('', () => this.hideFrames())
@@ -32,6 +37,8 @@ export class MicroAppsManager {
 
         anyWindow.microAppsEventsManager = new EventManager();
         anyWindow.microAppsServiceManager = new MicroAppsServiceManager();
+
+        this.apps = microApps;
     }
 
     hideFrames() {
@@ -42,10 +49,19 @@ export class MicroAppsManager {
         }
     }
 
+    findAppByWindow(window) {
+        const frames = document.querySelectorAll('iframe.micro-app-frame');
+        for (let index = 0; index < frames.length; index++) {
+            if ((frames[index] as any).contentWindow === window) {
+                return this.apps.find(app => frames[index].id === `micro-app-frame-${app.id}`)
+            }
+        }
+        return undefined;
+    }
+
     showFrame(app: MicroApp) {
-        console.log('Showing frame', app)
         this.hideFrames();
-        document.querySelector(`#micro-app-frame-${app.name}`).classList.add('shown')
+        document.querySelector(`#micro-app-frame-${app.id}`).classList.add('shown')
     }
 
     createFrame(app: MicroApp) {
@@ -61,7 +77,7 @@ export class MicroAppsManager {
         }
 
         const frame = document.createElement('iframe');
-        frame.id = `micro-app-frame-${app.name}`;
+        frame.id = `micro-app-frame-${app.id}`;
         frame.className = 'micro-app-frame';
         if (this.areaConfigOptions.frameContentFillingMethod === 'SourceUrl') {
             frame.src = app.entryUrl;

@@ -2,6 +2,7 @@
  * This interface represents micro app data
  */
 export interface MicroApp {
-    name: string;
+    id: string;
     entryUrl: string;
+    title: string;
 }

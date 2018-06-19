@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
   }
 
   toAppsMenu(apps: AppsState) {
-    return Object.keys(apps).map(key => ({appName: key, loaded: apps[key].loaded}))
+    return Object.keys(apps).map(key => ({appName: key, loaded: apps[key].loaded, title: apps[key].title}))
   }
 
   ngOnInit() {

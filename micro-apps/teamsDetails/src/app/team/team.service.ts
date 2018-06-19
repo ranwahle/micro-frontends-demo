@@ -5,12 +5,16 @@ import {
   AngularFireDatabase,
   AngularFireObject
 } from 'angularfire2/database';
+import {Team} from '../model/team.interface';
+import {ShellClientService} from '../shell-client/shell-client.service';
 
 @Injectable()
 export class TeamService {
-  team$: AngularFireObject < any > ;
+  team$: AngularFireObject<any>;
 
-  constructor(private db: AngularFireDatabase) {}
+  constructor(private db: AngularFireDatabase, private shellClient: ShellClientService) {
+  }
+
   getTeam(teamKey) {
     console.log('teamKey', teamKey);
     this.team$ = this.db.object(teamKey);
@@ -22,4 +26,8 @@ export class TeamService {
       .then(() => console.log('Edit success'))
       .catch((err) => console.error(`Could not edit: ${err}`));
    }
+
+  getTeams(): Promise<Team[]> {
+    return this.shellClient.getTeams();
+  }
 }

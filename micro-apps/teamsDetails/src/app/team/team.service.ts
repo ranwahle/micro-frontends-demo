@@ -21,6 +21,12 @@ export class TeamService {
     return this.team$;
   }
 
+  saveTeam(team) {
+    return this.team$.update(team)
+      .then(() => console.log('Edit success'))
+      .catch((err) => console.error(`Could not edit: ${err}`));
+   }
+
   getTeams(): Promise<Team[]> {
     return this.shellClient.getTeams();
   }

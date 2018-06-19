@@ -8,3 +8,9 @@ body{
     font-family: Roboto sans-serif;
     background-color: whitesmoke;
 }
+
+@keyframes fadeInOutAnimation {
+    0%   { opacity:.9; }
+    50%  { opacity:0; }
+    100% { opacity:.9; }
+  }

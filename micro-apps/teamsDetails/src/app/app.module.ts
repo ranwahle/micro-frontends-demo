@@ -2,6 +2,7 @@ import 'hammerjs'; // for touch gestures
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import {
@@ -35,6 +36,7 @@ const appRoutes: Routes = [
     BrowserModule,
     ShellClientModule,
     AngularFireDatabaseModule,
+    FormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     BrowserAnimationsModule,
     FlexLayoutModule,

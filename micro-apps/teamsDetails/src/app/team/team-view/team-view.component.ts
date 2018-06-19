@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { TeamService } from '../team.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs/Observable';
+import {TeamService} from '../team.service';
 
 @Component({
   selector: 'app-team-view',
@@ -14,10 +14,12 @@ export class TeamViewComponent implements OnInit {
   styleObj: any;
   busy: boolean;
   newPlayer: any = {};
+
   constructor(
     private route: ActivatedRoute,
     private teamService: TeamService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     let teamKey;
@@ -25,25 +27,30 @@ export class TeamViewComponent implements OnInit {
     this.route.params.subscribe((urlParameters) => {
       teamKey = urlParameters['id'];
 
-    this.teamService.getTeam(teamKey).valueChanges().subscribe((team) => {
-      this.team = team;});
+      this.teamService.getTeam(teamKey).valueChanges().subscribe((team) => {
+        this.team = team;
+        if (this.team) {
+          this.styleObj = {
+            'background-image': `url('assets/images/${this.team.poster}')`,
+          };
+        }
+      });
     });
 
-    this.styleObj = {
-      'background-image': `url('assets/images/${this.team.poster}')`,
-    };
-    setTimeout(() => { this.busy = false;
-       }, 500);
-    });
+
+    setTimeout(() => {
+      this.busy = false;
+    }, 500);
   }
 
-  // addPlayer() {
-  //   this.team.players = this.team.players || {};
-  //   const playerKey = Object.keys(this.team.players).length;
-  //   this.team.players[playerKey] = this.newPlayer;
-  //   this.teamService.saveTeam(this.team)
-  //   .then(() => this.newPlayer = {});
-  // }
+
+// addPlayer() {
+//   this.team.players = this.team.players || {};
+//   const playerKey = Object.keys(this.team.players).length;
+//   this.team.players[playerKey] = this.newPlayer;
+//   this.teamService.saveTeam(this.team)
+//   .then(() => this.newPlayer = {});
+// }
 }
 
 

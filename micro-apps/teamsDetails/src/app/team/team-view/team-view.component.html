@@ -4,6 +4,12 @@
     <img src={{(team)?.flag}}/>
   </div>
   <div class="content">
-      <ul><li *ngFor="let player of (team)?.players">{{player}}</li></ul>
+      <ul><li *ngFor="let player of (team)?.players">{{player.name}}</li></ul>
   </div>
+  <div [ngClass]="{'loading-mask': true, 'show': busy}">
+    <div *ngIf="busy" class="loader"><img src="../assets/images/fifa1.png"/></div>
+  </div>
+  <!-- <input type="text" [(ngModel)]="newPlayer.name">
+  <button (click)="addPlayer()">Add</button>    -->
+
 </div>

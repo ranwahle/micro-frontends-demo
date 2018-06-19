@@ -26,7 +26,8 @@ export class MicroAppsManager {
         this.router.config({root: ''})
         microApps.forEach(app => {
             this.router.add(`${app.id}`, () => {
-                this.showFrame(app)
+                this.showFrame(app);
+                this.setAppState(app);
                 this.shownApp = app;
             })
             this.createFrame(app);
@@ -39,6 +40,16 @@ export class MicroAppsManager {
         anyWindow.microAppsServiceManager = new MicroAppsServiceManager();
 
         this.apps = microApps;
+    }
+    getAppContextWindow(app: MicroApp) {
+        return  (document.querySelector(`#micro-app-frame-${app.id}`) as any).contentWindow;
+    }
+
+    setAppState(app: MicroApp) {
+        const contentWindow =  this.getAppContextWindow(app);
+        if (contentWindow.setState) {
+            contentWindow.setState(window.location.pathname.substring(`${app.id}/`.length))
+        }
     }
 
     hideFrames() {

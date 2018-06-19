@@ -37,7 +37,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     FlexLayoutModule,
     ...MAT_MODULES,
-    RouterModule.forRoot(appRoutes)
+   RouterModule.forRoot(appRoutes, {useHash: true})
   ],
   providers: [TeamService],
   bootstrap: [AppComponent]

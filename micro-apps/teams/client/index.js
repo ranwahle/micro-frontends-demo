@@ -1,8 +1,8 @@
 $(document).ready(function() {
-    var appClient = new shellAppClient();
+    const shellAppClient = new shellAppClient();
 
-    appClient.notifyLoaded();
-    appClient.registerDataService('get-teams', () =>  $.ajax('get-team-details') )
+    shellAppClient.notifyLoaded();
+    shellAppClient.registerDataService('get-teams', () =>  $.ajax('get-team-details') )
     $.ajax('get-team-details').then(function(data) {
         data.forEach(team => {
             addTeamSection(team);

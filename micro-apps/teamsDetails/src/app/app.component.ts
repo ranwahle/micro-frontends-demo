@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import 'rxjs/add/operator/take';
 
@@ -8,7 +8,7 @@ import 'rxjs/add/operator/take';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app works';
 
   constructor(private af: AngularFireDatabase) {
@@ -19,5 +19,12 @@ export class AppComponent {
       error => console.log('error', error),
       () => console.log('completed'),
     );
+  }
+
+  ngOnInit() {
+    const myParent: any = window.parent;
+    if (myParent && myParent.microAppsEventsManager && myParent.microAppsEventsManager.publish) {
+      myParent.microAppsEventsManager.publish('loaded', {appName: 'team-details'})
+    }
   }
 }

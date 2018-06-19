@@ -1,0 +1,30 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    /* background-image: url('assets/images/1_1008_300.png'); */
+    align-items: center;
+    height: 300px;
+    width: 1008px;
+    background-repeat: no-repeat; 
+}
+h1 {
+    letter-spacing: 0.5rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 100px;
+    margin: 0;
+    color: #b3358a;
+    margin-left:20px;
+    text-shadow: #f5f4f0 1px 0 10px;
+}
+img {
+    width: 20%;
+    filter: grayscale(60%);
+    margin-right:20px;
+}
+ul{
+    padding:0; 
+}
+li {
+    list-style: none;
+}

@@ -12,7 +12,7 @@ const anyWindow = window as any;
 export class MicroAppsManager {
 
     private areaConfigOptions: AreaConfig;
-    private router : FrontendRouter;
+    private router: FrontendRouter;
 
     configuraArea(areaConfig: AreaConfig) {
         this.areaConfigOptions = areaConfig;
@@ -35,7 +35,7 @@ export class MicroAppsManager {
     }
 
     hideFrames() {
-        const frames =  document.querySelectorAll('iframe.micro-app-frame');
+        const frames = document.querySelectorAll('iframe.micro-app-frame');
         for (let index = 0; index < frames.length; index++) {
 
             frames[index].classList.remove('shown');
@@ -44,13 +44,13 @@ export class MicroAppsManager {
 
     showFrame(app: MicroApp) {
         console.log('Showing frame', app)
-       this.hideFrames();
+        this.hideFrames();
         document.querySelector(`#micro-app-frame-${app.name}`).classList.add('shown')
     }
 
     createFrame(app: MicroApp) {
         if (!this.areaConfigOptions) {
-            throw({message: 'please set area configuration by using configureArea method' })
+            throw({message: 'please set area configuration by using configureArea method'})
         }
         const frameArea = document.querySelector(this.areaConfigOptions.frameAreaSelector);
 
@@ -63,9 +63,9 @@ export class MicroAppsManager {
         const frame = document.createElement('iframe');
         frame.id = `micro-app-frame-${app.name}`;
         frame.className = 'micro-app-frame';
-        if (this.areaConfigOptions.frameContentFillingMethod === 'SourceUrl' ) {
-            frame.src =  app.entryUrl;
-                   } else {
+        if (this.areaConfigOptions.frameContentFillingMethod === 'SourceUrl') {
+            frame.src = app.entryUrl;
+        } else {
             this.fetchContent(app, frame);
         }
         frameArea.appendChild(frame);
@@ -78,7 +78,9 @@ export class MicroAppsManager {
         fetch(app.entryUrl).then((response) => {
             response.text().then(content => {
                 content = content.replace('<head>', `<head><base href="${app.entryUrl}">`)
-                const frameDocument = frame.contentWindow.document;
+
+                const frameWindow = frame.contentWindow;
+                const frameDocument = frameWindow.document;
 
                 frameDocument.write(content)
                 frameDocument.close();

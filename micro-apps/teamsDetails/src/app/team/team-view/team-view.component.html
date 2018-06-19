@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="header" [ngStyle]="styleObj">
+    <h1 class="mat-display-1">{{(team)?.name}}</h1>
+    <img src={{(team)?.flag}}/>
+  </div>
+  <div class="content">
+      <ul><li *ngFor="let player of (team)?.players">{{player}}</li></ul>
+  </div>
+</div>

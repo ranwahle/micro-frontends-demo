@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MicroAppsServiceManager} from '../../../../../lib/src/micro-apps-service-manager';
 
 const shellParent: any = window.parent;
@@ -8,10 +8,12 @@ const shellParent: any = window.parent;
 })
 export class ShellClientService {
 
-  private serveceManager: MicroAppsServiceManager =  shellParent.microAppsServiceManager as MicroAppsServiceManager;
-  GetTeams() {
-  return this.serveceManager.requestService('get-teams')
+  private serviceManager: MicroAppsServiceManager = shellParent.microAppsServiceManager as MicroAppsServiceManager;
+
+  constructor() {
   }
 
-  constructor() { }
+  GetTeams() : Promise<any> {
+    return this.serviceManager.requestService('get-teams')
+  }
 }

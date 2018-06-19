@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     const myParent: any = window.parent;
     if (myParent && myParent.microAppsEventsManager && myParent.microAppsEventsManager.publish) {
-      myParent.microAppsEventsManager.publish('loaded', {appName: 'team-details'})
+      myParent.microAppsEventsManager.publish('loaded', {appName: 'team-details', context: window})
     }
   }
 }

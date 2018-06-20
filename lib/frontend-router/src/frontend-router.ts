@@ -1,6 +1,8 @@
 import {ApplicationRoute} from './model/application-route';
 
-
+/**
+ *  this class is taken from http://krasimirtsonev.com/blog/article/A-modern-JavaScript-router-in-100-lines-history-api-pushState-hash-url
+ */
 export class FrontendRouter {
 
     private static router: FrontendRouter;
@@ -75,11 +77,9 @@ export class FrontendRouter {
     listen() {
         // if (this.usePushState) {
         window.addEventListener('popstate', (args) => {
-            console.log('popstate', args.state);
             this._onLocationChange(null)
         });
         window.addEventListener('pushstate', (args: any) => {
-            console.log('pushstate', args.state);
             this._onLocationChange(null)
         });
 
@@ -87,7 +87,7 @@ export class FrontendRouter {
         let current = window.location.pathname;
         const scheduleCheck = () => {
 
-            current = this._cLoc();
+            current = this.cleanLocation();
             if (lastUrl !== current) {
                 lastUrl = current;
                 this.resolve();
@@ -96,25 +96,10 @@ export class FrontendRouter {
         }
         scheduleCheck();
 
-        console.log('listenning...')
-        // } else if (this.isHashChangeAPIAvailable()) {
-        //     window.addEventListener('hashchange', this._onLocationChange);
-        //  } else {
-        //      let cached = this._cLoc(), current, check;
-        //
-        //      check = () => {
-        //          current = this._cLoc();
-        //          if (cached !== current) {
-        //              cached = current;
-        //              this.resolve();
-        //          }
-        //          this._listeningInterval = setTimeout(check, 200);
-        //      };
-        //      check();
-        //  }
+
     }
 
-    _cLoc() {
+    cleanLocation() {
         if (typeof window !== 'undefined') {
             if (typeof (window as any).__NAVIGO_WINDOW_LOCATION_MOCK__ !== 'undefined') {
                 return (window as any).__NAVIGO_WINDOW_LOCATION_MOCK__;
@@ -135,7 +120,6 @@ export class FrontendRouter {
     }
 
     _onLocationChange(args) {
-        console.log('args', args)
         this.resolve(args);
     }
 
@@ -172,7 +156,7 @@ export class FrontendRouter {
 
     _getRoot() {
         if (this.root !== null) return this.root;
-        this.root = this.getAppRoot(this._cLoc().split('?')[0], this.routes);
+        this.root = this.getAppRoot(this.cleanLocation().split('?')[0], this.routes);
         return this.root;
     }
 
@@ -235,7 +219,6 @@ export class FrontendRouter {
             });
 
 
-        console.log('routes matched', result, routes, url)
 
         return result.filter(m => m);;
     }
@@ -246,12 +229,11 @@ export class FrontendRouter {
 
     resolve(current?) {
         current = current || window.location.pathname;
-        console.log('current', current, window.location.pathname)
         var handler, m;
-        const url = (current || this._cLoc()).replace(this._getRoot(), '');
+        const url = (current || this.cleanLocation()).replace(this._getRoot(), '');
 
 
-        let GETParameters = this.extractGETParameters(current || this._cLoc());
+        let GETParameters = this.extractGETParameters(current || this.cleanLocation());
         let onlyURL = this.getOnlyURL(url, this._useHash, this._hash);
 
         if (this._paused) return false;
@@ -280,7 +262,6 @@ export class FrontendRouter {
             };
             handler = m.route.handler;
 
-            console.log('handler', handler, m.route);
 
             this.manageHooks(() => {
                 this.manageHooks(() => {

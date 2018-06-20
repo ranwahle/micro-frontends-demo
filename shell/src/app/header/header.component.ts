@@ -33,7 +33,9 @@ export class HeaderComponent implements OnInit {
   }
 
   navigationOccured(evt) {
-    history.pushState({}, evt.srcElement.attributes['href'].value, evt.srcElement.attributes['href'].value)
+    history.pushState({},
+        evt.srcElement.attributes['href'].value,
+        evt.srcElement.attributes['href'].value)
     evt.preventDefault();
 
   }

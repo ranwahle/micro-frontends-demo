@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Game} from './model/game.interface';
 import {Observable} from 'rxjs/index';
+import {ShellClientService} from './shell-client/shell-client.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GamesService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private shellClient: ShellClientService) { }
 
-  getGames() : Observable<Game[]> {
-    return this.http.get('http://localhost:3002/games') as Observable<Game[]>
+  getGames() : Promise<Game[]> {
+    return this.shellClient.getGames();
   }
 
   saveGames(games: Game[]) {

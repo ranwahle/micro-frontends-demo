@@ -11,6 +11,6 @@ export class GroupsService {
   }
 
   getGroups(): Promise<Group[]> {
-    return this.shellClient.GetTeams();
+    return this.shellClient.getTeams();
   }
 }

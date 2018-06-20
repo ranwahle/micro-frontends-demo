@@ -33,9 +33,11 @@ export class AppComponent implements OnInit {
             {id: 'team-details', entryUrl: '/team-details-app', title: 'Team Details'}
         ])
         this.appsEventManager = (window as any).microAppsEventsManager;
-        this.appsEventManager.subscribe('loaded', args => {
-            console.log('args', args)
-            const loadedApp = appManager.findAppByWindow(args.context);
+
+        this.appsEventManager.subscribe(
+            'loaded', args => {
+            const loadedApp =
+                appManager.findAppByWindow(args.context);
             this.store.dispatch(new AppLoadedAction(loadedApp))
 
         });

@@ -6,6 +6,7 @@ import {EventManager} from '../../../../../lib/src/event-manager';
 import {Location} from '@angular/common';
 
 const shellParent: any = window.parent;
+const myWindow = window as any;
 
 @Injectable()
 export class ShellClientService {
@@ -17,10 +18,13 @@ export class ShellClientService {
 
     this.router.events.subscribe(changes => {
       if (changes instanceof (NavigationEnd)) {
-        this.eventsManager.publish('routeChanged', changes.urlAfterRedirects)
+        this.eventsManager.dispatch('routeChanged', changes.urlAfterRedirects)
       }
     });
-    (window as any).setState = url =>  this.location.replaceState(url)
+
+    myWindow.setState = url => {
+      this.location.replaceState(url)
+    }
   }
 
   getTeams(): Promise<any> {

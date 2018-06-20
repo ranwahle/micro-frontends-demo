@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
         appManager.configuraArea({
             frameContentFillingMethod: 'SourceUrl', frameAreaSelector: '#micro-apps-frame'
         })
-        appManager.initApps([{id: 'teams', entryUrl: '/teams-app/', title: 'teams'},
+        appManager.initApps([{id: 'teams', entryUrl: '/teams-app/', title: 'teams',  componentId: 'teams-component', type: 'component'},
             {id: 'games', entryUrl: '/games-app', title: 'games'},
             {id: 'team-details', entryUrl: '/team-details-app', title: 'Team Details'}
         ])
@@ -38,12 +38,19 @@ export class AppComponent implements OnInit {
             'loaded', args => {
             const loadedApp =
                 appManager.findAppByWindow(args.context);
-            this.store.dispatch(new AppLoadedAction(loadedApp))
+            if (loadedApp) {
+                this.store.dispatch(new AppLoadedAction(loadedApp))
+            } else {
+                this.store.dispatch(new AppLoadedAction( appManager.findAppByComponentName(args.context)))
+
+            }
 
         });
 
         this.appsEventManager.subscribe('routeChanged', args => {
-            window.history.replaceState(null, null, `${appManager.shownApp.id}${args}`);
+            if (appManager.shownApp) {
+                window.history.replaceState(null, null, `${appManager.shownApp.id}${args}`);
+            }
         })
     }
 

@@ -31,12 +31,19 @@ export class MicroAppsManager {
 
         this.router.config({root: ''})
         microApps.forEach(app => {
-            this.router.add(app.id, () => {
-                this.showFrame(app);
-                this.setAppState(app);
-                this.shownApp = app;
-            })
-            this.createFrame(app);
+            if (app.type !== 'component') {
+                this.router.add(app.id, () => {
+                    this.showFrame(app);
+                    this.setAppState(app);
+                    this.shownApp = app;
+                })
+                this.createFrame(app);
+            } else {
+                this.router.add(app.id, () => {
+                    this.hideFrames();
+                    this.showComponent(app);
+                })
+            }
         })
         this.router.add('', () => this.hideFrames())
 
@@ -65,6 +72,9 @@ export class MicroAppsManager {
             // Sure memory leak...
             anyWindow.microAppsEventsManager.subscribe(MICRO_APPS_EVENTS.loaded, args => {
                 const contentApp = this.findAppByWindow(args.context);
+                if (!contentApp) {
+                    return;
+                }
                 if (app.id === contentApp.id && args.context.setState) {
                     args.context.setState(thisLocation.substring(`${app.id}/`.length))
                 }
@@ -78,6 +88,14 @@ export class MicroAppsManager {
 
             frames[index].classList.remove('shown');
         }
+        if (!this.apps) {
+            return;
+        }
+        const coponentApps = this.apps.filter(app => app.type === 'component');
+        coponentApps.forEach(componentApp => document.querySelector(componentApp.componentId).setAttribute('hidden', ''));
+    }
+    findAppByComponentName(componentId) {
+        return this.apps.find(app => app.componentId === componentId)
     }
 
     findAppByWindow(window) {
@@ -88,6 +106,11 @@ export class MicroAppsManager {
             }
         }
         return undefined;
+    }
+    showComponent(app: MicroApp) {
+        const frameArea = document.querySelector(this.areaConfigOptions.frameAreaSelector);
+        const component = document.createElement(app.componentId);
+        frameArea.appendChild(component);
     }
 
     showFrame(app: MicroApp) {

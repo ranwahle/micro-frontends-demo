@@ -1,11 +1,15 @@
+import {shellAppClient} from  './shell-app-client.js';
+import $ from '../node_modules/jquery/dist/jquery.js';
 const shellClient = new shellAppClient();
+
 
 $(document).ready(function() {
 
 
-    shellClient.notifyLoaded();
+   // shellClient.notifyLoaded();
 
-    const getTeams = () => $.ajax('get-team-details');
+    const getTeams = () => $.ajax('http://localhost:3001/get-team-details');
+    // shellClient.registerDataService('get-teams', () => getTeams())
     shellClient.registerDataService('get-teams', () => getTeams() )
 
     getTeams().then(function(data) {

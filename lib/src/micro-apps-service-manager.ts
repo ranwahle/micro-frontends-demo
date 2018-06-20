@@ -2,6 +2,7 @@ import {MicroAppService} from './model/micro=app-service';
 
 export class MicroAppsServiceManager {
     private services: {[serviName: string]: MicroAppService} = {};
+
     registerService(serviceName: string, executeFn: (...args: any[]) => Promise<any>) {
             if (this.services[serviceName]) {
                 console.error(`Service ${serviceName} already registered`)
@@ -14,6 +15,8 @@ export class MicroAppsServiceManager {
         if (!this.services[serviceName]) {
             throw({message: `Service ${serviceName} is not registered`})
         }
-        return this.services[serviceName].invokeMethod(args);
+        const result = this.services[serviceName].invokeMethod(args);
+        console.log('service', serviceName, result)
+        return result;
     }
 }

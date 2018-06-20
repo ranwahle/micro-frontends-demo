@@ -21,7 +21,7 @@ export class GamesTableComponent implements OnInit {
   addGame(game: Game) {
     this.games.push(game);
     this.gamesService.saveGames(this.games).subscribe(() => {
-      this.gamesService.getGames().pipe(first()).subscribe(games => this.games = games);
+      this.gamesService.getGames().then(games => this.games = games);
     });
   }
 
@@ -33,7 +33,7 @@ export class GamesTableComponent implements OnInit {
       }
     );
 
-    this.gamesService.getGames().pipe(first()).subscribe(games => this.games = games);
+    this.gamesService.getGames().then(games => this.games = games);
   }
 
 }

@@ -3,6 +3,7 @@ import {AreaConfig} from './model/area-config';
 import {FrontendRouter} from '../frontend-router';
 import {EventManager} from './event-manager';
 import {MicroAppsServiceManager} from './micro-apps-service-manager';
+import {MICRO_APPS_EVENTS} from './micro-apps-events';
 
 const anyWindow = window as any;
 
@@ -16,6 +17,11 @@ export class MicroAppsManager {
     shownApp: MicroApp;
     apps: MicroApp[];
 
+    constructor() {
+        anyWindow.microAppsEventsManager = new EventManager();
+        anyWindow.microAppsServiceManager = new MicroAppsServiceManager();
+    }
+
     configuraArea(areaConfig: AreaConfig) {
         this.areaConfigOptions = areaConfig;
         this.router = FrontendRouter.getRouter();
@@ -25,7 +31,7 @@ export class MicroAppsManager {
 
         this.router.config({root: ''})
         microApps.forEach(app => {
-            this.router.add(`${app.id}`, () => {
+            this.router.add(app.id, () => {
                 this.showFrame(app);
                 this.setAppState(app);
                 this.shownApp = app;
@@ -36,11 +42,16 @@ export class MicroAppsManager {
 
         this.router.listen()
 
-        anyWindow.microAppsEventsManager = new EventManager();
-        anyWindow.microAppsServiceManager = new MicroAppsServiceManager();
+
 
         this.apps = microApps;
     }
+
+    /**
+     * Gets micro app context window
+     * @param {MicroApp} app
+     * @returns {any}
+     */
     getAppContextWindow(app: MicroApp) {
         return  (document.querySelector(`#micro-app-frame-${app.id}`) as any).contentWindow;
     }
@@ -49,6 +60,15 @@ export class MicroAppsManager {
         const contentWindow =  this.getAppContextWindow(app);
         if (contentWindow.setState) {
             contentWindow.setState(window.location.pathname.substring(`${app.id}/`.length))
+        } else {
+            const thisLocation = window.location.pathname;
+            // Sure memory leak...
+            anyWindow.microAppsEventsManager.subscribe(MICRO_APPS_EVENTS.loaded, args => {
+                const contentApp = this.findAppByWindow(args.context);
+                if (app.id === contentApp.id && args.context.setState) {
+                    args.context.setState(thisLocation.substring(`${app.id}/`.length))
+                }
+            })
         }
     }
 

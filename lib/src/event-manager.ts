@@ -22,11 +22,11 @@ export class EventManager {
 
 
     /**
-     * Publish event
+     * Dispatch event
      * @param {string} eventName
-     * @param args
+     * @param args event arguments
      */
-    publish(eventName: string, ...args: any[]) {
+    dispatch(eventName: string, ...args: any[]) {
         if (!this.eventSubscriptions[eventName]) {
             return;
         }

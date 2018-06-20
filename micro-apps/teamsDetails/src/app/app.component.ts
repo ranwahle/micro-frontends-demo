@@ -15,16 +15,16 @@ export class AppComponent implements OnInit {
     const observable = this.af.object('contact').valueChanges();
     observable
     .subscribe(
-      next => console.log('next', next),
-      error => console.log('error', error),
+      next => {},
+      error => console.error('error', error),
       () => console.log('completed'),
     );
   }
 
   ngOnInit() {
     const myParent: any = window.parent;
-    if (myParent && myParent.microAppsEventsManager && myParent.microAppsEventsManager.publish) {
-      myParent.microAppsEventsManager.publish('loaded', {appName: 'team-details', context: window})
+    if (myParent && myParent.microAppsEventsManager && myParent.microAppsEventsManager.dispatch) {
+      myParent.microAppsEventsManager.dispatch('loaded', {appName: 'team-details', context: window})
     }
   }
 }

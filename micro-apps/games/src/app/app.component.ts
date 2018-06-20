@@ -13,11 +13,11 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     const myParent: any = window.parent;
-    if (myParent && myParent.microAppsEventsManager && myParent.microAppsEventsManager.publish) {
-      myParent.microAppsEventsManager.publish('loaded', {appName: 'games', context: window})
+    if (myParent && myParent.microAppsEventsManager && myParent.microAppsEventsManager.dispatch) {
+      myParent.microAppsEventsManager.dispatch('loaded', {appName: 'games', context: window})
     }
 
-    this.shellClient.GetTeams();
+    this.shellClient.getTeams();
   }
 }
 

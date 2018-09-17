@@ -3,6 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "start:games": "cd ./games && npm start",
+    "start:games-server": "cd ../micro-apps/games-server && npm start",
+    "start:teams": "cd ../micro-apps/teams && npm start",
+    "start:teamDetails": "cd ../micro-apps/teamsDetails && npm start",
+    "start:microapps": "cd ../micro-apps/games && npm start && npm run start:games-server && npm run start:teams && npm run start:teamDetails ",
     "start": "ng serve --port 4201",
     "build": "ng build",
     "test": "ng test",

@@ -43,7 +43,9 @@ export class AppComponent implements OnInit {
         });
 
         this.appsEventManager.subscribe('routeChanged', args => {
-            window.history.replaceState(null, null, `${appManager.shownApp.id}${args}`);
+            if (appManager.shownApp) {
+              window.history.replaceState(null, null, `${appManager.shownApp.id}${args}`);
+            }
         })
     }
 
